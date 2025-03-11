@@ -5,7 +5,7 @@ class FirstScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("AP4 - Kaliémie"),
+        title: Text("Kaliémie"),
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 10.0),

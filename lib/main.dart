@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:ap4_android_application/screens/first_screen.dart';
 import 'package:ap4_android_application/screens/second_screen.dart';
 import 'package:ap4_android_application/screens/third_screen.dart';
+import 'package:ap4_android_application/services/permissions_service.dart';
 
 void main() {
   runApp(MyApp());
+
+  PermissionsService.requestPermissions();
 }
 
 class MyApp extends StatelessWidget {

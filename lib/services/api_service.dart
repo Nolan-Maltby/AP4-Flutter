@@ -12,12 +12,12 @@ class ApiService {
         final data = jsonDecode(response.body);
 
         if (data is Map<String, dynamic> && data.containsKey('id')) {
-          return data; // Retourne les infos de l'utilisateur
+          return data;
         } else {
-          return null; // Identifiants incorrects
+          return null;
         }
       } else {
-        return null; // Erreur serveur
+        return null;
       }
     } catch (e) {
       print("Erreur de connexion : $e");
