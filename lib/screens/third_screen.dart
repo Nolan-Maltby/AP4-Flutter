@@ -9,9 +9,6 @@ class ThirdScreen extends StatefulWidget {
 }
 
 class _ThirdScreenState extends State<ThirdScreen> {
-  String? nom;
-  String? prenom;
-
   @override
   void initState() {
     super.initState();
@@ -19,19 +16,62 @@ class _ThirdScreenState extends State<ThirdScreen> {
   }
 
   Future<void> _loadUserData() async {
-    Map<String, dynamic>? userData = await StorageService.getUserData();
-    setState(() {
-      nom = userData?['nom'];
-      prenom = userData?['prenom'];
-    });
+    // Charger les données utilisateur
+  }
+
+  void _logout() {
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Bienvenue sur Kaliémie")),
-      body: Center(
-        child: Text("Bienvenue, ${prenom ?? "Utilisateur"} ${nom ?? ""}"),
+      appBar: AppBar(
+        title: Text("Kaliémie"),
+        centerTitle: false,
+        actions: [
+          Row(
+            children: [
+              Image.asset('assets/images/ilist.jpg', width: 30, height: 30),
+              SizedBox(width: 10),
+              Image.asset('assets/images/iimport.jpg', width: 30, height: 30),
+              SizedBox(width: 10),
+              PopupMenuButton<String>(
+                onSelected: (value) {
+                  if (value == 'logout') {
+                    _logout();
+                  }
+                },
+                itemBuilder: (BuildContext context) {
+                  return [
+                    PopupMenuItem(
+                      value: 'logout',
+                      child: Text('Déconnexion'),
+                    ),
+                  ];
+                },
+                child: Icon(Icons.more_vert),
+              ),
+            ],
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          SizedBox(height: 50), // Ajout d'un espace avant l'image
+          SizedBox(
+            height: 250,
+            child: Image.asset(
+              'assets/images/medicalpng.png',
+              fit: BoxFit.cover,
+            ),
+          ),
+          Expanded(
+            child: Center(
+              // contenu de la page
+            ),
+          ),
+        ],
       ),
     );
   }

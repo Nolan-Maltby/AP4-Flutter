@@ -4,13 +4,34 @@ class FirstScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("AP4 - Kaliémie")),
+      appBar: AppBar(
+        title: Text("AP4 - Kaliémie"),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 10.0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, '/second');
+              },
+              child: Image.asset(
+                'assets/images/on.png',
+                height: 40,
+              ),
+            ),
+          ),
+        ],
+      ),
       body: Center(
-        child: ElevatedButton(
-          child: Text("Se connecter"),
-          onPressed: () {
-            Navigator.pushNamed(context, '/second');
-          },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/medical.jpg',
+              width: 300,
+              height: 300,
+            ),
+            SizedBox(height: 20),
+          ],
         ),
       ),
     );

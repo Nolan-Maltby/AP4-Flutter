@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ap4_android_application/services/api_service.dart';
 import 'package:ap4_android_application/services/storage_service.dart';
-import 'package:ap4_android_application/screens/third_screen.dart'; // Importation de la page après connexion
+import 'package:ap4_android_application/screens/third_screen.dart';
 
 class SecondScreen extends StatefulWidget {
   const SecondScreen({Key? key}) : super(key: key);
@@ -43,7 +43,7 @@ class _SecondScreenState extends State<SecondScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Erreur"),
+          title: const Text("Erreur de connexion"),
           content: Text(message),
           actions: [
             TextButton(
