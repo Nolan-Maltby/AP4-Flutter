@@ -26,12 +26,16 @@ class _SecondScreenState extends State<SecondScreen> {
     final userData = await ApiService.login(username, password);
 
     if (userData != null) {
-      await StorageService.saveUserData(userData); // Stocke les infos utilisateur
+      await StorageService.saveUserData(
+        userData,
+      ); // Stocke les infos utilisateur
       if (!mounted) return;
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const ThirdScreen()), // Redirige vers l'écran après connexion
+        MaterialPageRoute(
+          builder: (context) => const ThirdScreen(),
+        ), // Redirige vers l'écran après connexion
       );
     } else {
       _showErrorDialog("Identifiant ou mot de passe incorrect");
@@ -59,18 +63,33 @@ class _SecondScreenState extends State<SecondScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Connexion")),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: const Text(
+          "Connexion",
+          style: TextStyle(
+          color: Colors.black,
+          ),
+        ),
+        iconTheme: const IconThemeData(color: Colors.black),
+      ),
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TextField(controller: _loginController, decoration: InputDecoration(labelText: "Identifiant")),
-            TextField(controller: _passwordController, decoration: InputDecoration(labelText: "Mot de passe"), obscureText: true),
-            SizedBox(height: 20),
-            ElevatedButton(
-              child: Text("Se connecter"),
-              onPressed: _login,
+            TextField(
+              controller: _loginController,
+              decoration: InputDecoration(labelText: "Identifiant"),
             ),
+            TextField(
+              controller: _passwordController,
+              decoration: InputDecoration(labelText: "Mot de passe"),
+              obscureText: true,
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(child: Text("Se connecter"), onPressed: _login),
           ],
         ),
       ),

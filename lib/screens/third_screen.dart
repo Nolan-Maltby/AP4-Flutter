@@ -32,13 +32,14 @@ class _ThirdScreenState extends State<ThirdScreen> {
     ].request();
 
     String permissionsText = statuses.entries.map((entry) {
-      return "${entry.key}: ${entry.value.isGranted ? '✅ Accordée' : '❌ Refusée'}";
+      return "${entry.key}: ${entry.value.isGranted ? 'Ok' : 'Refusée'}";
     }).join("\n");
 
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
+          backgroundColor: Colors.white,
           title: Text("Permissions accordées"),
           content: Text(permissionsText),
           actions: [
@@ -57,6 +58,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          backgroundColor: Colors.white,
           title: Text("Importer"),
           content: Text("Importer"),
           actions: [
@@ -74,6 +76,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          backgroundColor: Colors.white,
           title: Text("Exporter"),
           content: Text("Exporter"),
           actions: [
@@ -90,7 +93,9 @@ class _ThirdScreenState extends State<ThirdScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         title: Text("Kaliémie"),
         centerTitle: false,
@@ -108,6 +113,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
               ),
               SizedBox(width: 10),
               PopupMenuButton<String>(
+                color: Colors.white,
                 onSelected: (value) {
                   if (value == 'export') {
                     _showExportDialog();
