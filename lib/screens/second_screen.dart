@@ -28,14 +28,14 @@ class _SecondScreenState extends State<SecondScreen> {
     if (userData != null) {
       await StorageService.saveUserData(
         userData,
-      ); // Stocke les infos utilisateur
+      );
       if (!mounted) return;
 
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => const ThirdScreen(),
-        ), // Redirige vers l'écran après connexion
+        ),
       );
     } else {
       _showErrorDialog("Identifiant ou mot de passe incorrect");

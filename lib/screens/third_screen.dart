@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ap4_android_application/services/storage_service.dart';
 import 'package:ap4_android_application/services/permissions_service.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:ap4_android_application/screens/visite_screen.dart';
 
 class ThirdScreen extends StatefulWidget {
   const ThirdScreen({Key? key}) : super(key: key);
@@ -11,6 +12,8 @@ class ThirdScreen extends StatefulWidget {
 }
 
 class _ThirdScreenState extends State<ThirdScreen> {
+  String _userName = "";
+
   @override
   void initState() {
     super.initState();
@@ -18,7 +21,12 @@ class _ThirdScreenState extends State<ThirdScreen> {
   }
 
   Future<void> _loadUserData() async {
-
+    final userData = await StorageService.getUserData();
+    if (userData != null && userData.containsKey('prenom')) {
+      setState(() {
+        _userName = userData['prenom'];
+      });
+    }
   }
 
   void _logout() {
@@ -53,24 +61,13 @@ class _ThirdScreenState extends State<ThirdScreen> {
     );
   }
 
-  Future<void> _showImportDialog() async {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          title: Text("Importer"),
-          content: Text("Importer"),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text("OK"),
-            ),
-          ],
-        );
-      },
+  void _navigateToVisiteScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => VisiteScreen()),
     );
   }
+
   Future<void> _showExportDialog() async {
     showDialog(
       context: context,
@@ -108,7 +105,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
               ),
               SizedBox(width: 10),
               GestureDetector(
-                onTap: _showImportDialog,
+                onTap: _navigateToVisiteScreen,
                 child: Image.asset('assets/images/iimport.jpg', width: 30, height: 30),
               ),
               SizedBox(width: 10),
@@ -149,9 +146,14 @@ class _ThirdScreenState extends State<ThirdScreen> {
               fit: BoxFit.cover,
             ),
           ),
-          Expanded(
-            child: Center(
-              // contenu de la page
+          Padding(
+            padding: const EdgeInsets.only(left: 10, top: 50),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Bienvenue, $_userName',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ],
