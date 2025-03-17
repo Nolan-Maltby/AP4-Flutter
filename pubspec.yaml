@@ -30,7 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http: ^0.13.5
+  http: ^0.13.6
+  intl: ^0.18.1
   permission_handler: ^11.0.1
   shared_preferences: ^2.2.2
 
