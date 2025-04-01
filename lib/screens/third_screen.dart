@@ -37,6 +37,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
     Map<Permission, PermissionStatus> statuses = await [
       Permission.location,
       Permission.contacts,
+      Permission.storage,
     ].request();
 
     String permissionsText = statuses.entries.map((entry) {
