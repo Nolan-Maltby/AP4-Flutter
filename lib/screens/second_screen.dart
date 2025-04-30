@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:ap4_android_application/services/api_service.dart';
 import 'package:ap4_android_application/services/storage_service.dart';
 import 'package:ap4_android_application/screens/third_screen.dart';
+import 'package:hive/hive.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
+import 'package:ap4_android_application/models/credentials.dart';
 
 class SecondScreen extends StatefulWidget {
   const SecondScreen({Key? key}) : super(key: key);
@@ -13,6 +17,10 @@ class SecondScreen extends StatefulWidget {
 class _SecondScreenState extends State<SecondScreen> {
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  String hashPassword(String password) {
+    return sha256.convert(utf8.encode(password)).toString();
+  }
 
   Future<void> _login() async {
     String username = _loginController.text.trim();
@@ -26,11 +34,16 @@ class _SecondScreenState extends State<SecondScreen> {
     final userData = await ApiService.login(username, password);
 
     if (userData != null) {
-      await StorageService.saveUserData(
-        userData,
-      );
-      if (!mounted) return;
+      await StorageService.saveUserData(userData);
 
+      // Stocker les identifiants
+      final credsBox = Hive.box<Credentials>('credentials');
+      await credsBox.put('user', Credentials(
+        login: username,
+        passwordHash: hashPassword(password),
+      ));
+
+      if (!mounted) return;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -66,15 +79,9 @@ class _SecondScreenState extends State<SecondScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text(
-          "Connexion",
-          style: TextStyle(
-          color: Colors.black,
-          ),
-        ),
+        title: const Text("Connexion", style: TextStyle(color: Colors.black)),
         iconTheme: const IconThemeData(color: Colors.black),
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -89,7 +96,10 @@ class _SecondScreenState extends State<SecondScreen> {
               obscureText: true,
             ),
             SizedBox(height: 20),
-            ElevatedButton(child: Text("Se connecter"), onPressed: _login),
+            ElevatedButton(
+              child: Text("Se connecter"),
+              onPressed: _login,
+            ),
           ],
         ),
       ),

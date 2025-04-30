@@ -3,6 +3,8 @@ import 'package:ap4_android_application/services/storage_service.dart';
 import 'package:ap4_android_application/services/permissions_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:ap4_android_application/screens/visite_screen.dart';
+import 'package:hive/hive.dart';
+import 'package:ap4_android_application/models/credentials.dart';
 
 class ThirdScreen extends StatefulWidget {
   const ThirdScreen({Key? key}) : super(key: key);
@@ -29,8 +31,13 @@ class _ThirdScreenState extends State<ThirdScreen> {
     }
   }
 
-  void _logout() {
-    Navigator.pop(context);
+  void _logout() async {
+    // Supprimer les identifiants Hive
+    await Hive.box<Credentials>('credentials').delete('user');
+
+    // Revenir à l'écran de connexion
+    if (!mounted) return;
+    Navigator.pushReplacementNamed(context, '/second');
   }
 
   Future<void> _showPermissionsDialog() async {

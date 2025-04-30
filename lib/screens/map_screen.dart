@@ -18,8 +18,9 @@ class PatientMapScreen extends StatefulWidget {
 class _PatientMapScreenState extends State<PatientMapScreen> {
   LatLng? patientPosition;
   LatLng? myPosition;
-  late StreamSubscription<Position> _positionSubscription;
+  StreamSubscription<Position>? _positionSubscription;
   bool isLoading = true;
+  MapController mapController = MapController();
 
   @override
   void initState() {
@@ -29,7 +30,7 @@ class _PatientMapScreenState extends State<PatientMapScreen> {
 
   Future<void> _initMap() async {
     await _fetchPatientCoordinates();
-    _startLocationStream();
+    await _handleLocationPermissionAndStartStream();
     setState(() {
       isLoading = false;
     });
@@ -43,7 +44,8 @@ class _PatientMapScreenState extends State<PatientMapScreen> {
       final url = Uri.parse(
           'https://api-adresse.data.gouv.fr/search/?q=${Uri.encodeComponent(adresseComplete)}&limit=1');
 
-      final response = await http.get(url).timeout(Duration(seconds: 5)); // Timeout ajouté
+      final response =
+          await http.get(url).timeout(Duration(seconds: 5)); // Timeout
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -63,35 +65,34 @@ class _PatientMapScreenState extends State<PatientMapScreen> {
         print('Erreur API : ${response.statusCode}');
       }
     } catch (e) {
-      print('Erreur lors du géocodage avec api-adresse.data.gouv.fr : $e');
+      print('Erreur lors du géocodage : $e');
     }
   }
 
-  void _startLocationStream() async {
+  Future<void> _handleLocationPermissionAndStartStream() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      print("GPS désactivé.");
+      _showLocationErrorDialog(
+          'La localisation est désactivée. Veuillez l’activer dans les paramètres.');
       return;
     }
 
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        print("Permission refusée.");
-        return;
-      }
     }
 
-    if (permission == LocationPermission.deniedForever) {
-      print("Permission refusée définitivement.");
+    if (permission == LocationPermission.deniedForever ||
+        permission == LocationPermission.denied) {
+      _showLocationErrorDialog(
+          'Permission de localisation refusée. Veuillez l’autoriser dans les paramètres.');
       return;
     }
 
     _positionSubscription = Geolocator.getPositionStream(
       locationSettings: LocationSettings(
         accuracy: LocationAccuracy.high,
-        distanceFilter: 5, // mise à jour si l'utilisateur bouge d'au moins 5m
+        distanceFilter: 5,
       ),
     ).listen((Position position) {
       if (mounted) {
@@ -102,9 +103,28 @@ class _PatientMapScreenState extends State<PatientMapScreen> {
     });
   }
 
+  void _showLocationErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('Localisation désactivée'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+              Geolocator.openLocationSettings(); // Ouvre les réglages GPS
+            },
+            child: Text('Ouvrir les paramètres'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   void dispose() {
-    _positionSubscription.cancel(); // Arrêter le stream quand l'écran est fermé
+    _positionSubscription?.cancel(); // Ne plante pas si null
     super.dispose();
   }
 
@@ -115,6 +135,7 @@ class _PatientMapScreenState extends State<PatientMapScreen> {
       body: isLoading || patientPosition == null
           ? Center(child: CircularProgressIndicator())
           : FlutterMap(
+              mapController: mapController,
               options: MapOptions(
                 center: patientPosition,
                 zoom: 16.0,
@@ -126,7 +147,6 @@ class _PatientMapScreenState extends State<PatientMapScreen> {
                 ),
                 MarkerLayer(
                   markers: [
-                    // Marqueur du patient
                     Marker(
                       width: 80.0,
                       height: 80.0,
@@ -148,7 +168,6 @@ class _PatientMapScreenState extends State<PatientMapScreen> {
                         ],
                       ),
                     ),
-                    // Marqueur de l'infirmier (si position obtenue)
                     if (myPosition != null)
                       Marker(
                         width: 80.0,
