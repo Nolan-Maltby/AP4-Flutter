@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:ap4_android_application/screens/map_screen.dart';
 
 class PatientScreen extends StatefulWidget {
   final int patientId;
@@ -15,17 +18,34 @@ class PatientScreen extends StatefulWidget {
 class _PatientScreenState extends State<PatientScreen> {
   bool soin1Realise = false;
   bool soin2Realise = false;
-  DateTime? dateReelle = DateTime(2019, 1, 15);
+  DateTime? dateReelle = DateTime.now();
   DateTime? datePrevue = DateTime(2019, 1, 15);
   Map<String, dynamic>? patientData;
   bool isLoading = true;
+  TextEditingController commentaireController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    _initHive();
     fetchPatientData();
   }
 
+  // Initialisation de Hive avec un Box unique par visite (en utilisant l'ID du patient)
+  Future<void> _initHive() async {
+    final dir = await getApplicationDocumentsDirectory();
+    Hive.init(dir.path);
+    var box = await Hive.openBox(
+      'visite_${widget.patientId}',
+    ); // Box unique pour chaque visite
+    setState(() {
+      soin1Realise = box.get('soin1', defaultValue: false);
+      soin2Realise = box.get('soin2', defaultValue: false);
+      commentaireController.text = box.get('commentaire', defaultValue: '');
+    });
+  }
+
+  // Récupérer les données du patient depuis l'API
   Future<void> fetchPatientData() async {
     final response = await http.get(
       Uri.parse(
@@ -44,6 +64,7 @@ class _PatientScreenState extends State<PatientScreen> {
     }
   }
 
+  // Sélectionner une date
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -57,6 +78,20 @@ class _PatientScreenState extends State<PatientScreen> {
         dateReelle = picked;
       });
     }
+  }
+
+  // Sauvegarder les informations de la visite
+  void _sauvegarder() async {
+    var box = await Hive.openBox(
+      'visite_${widget.patientId}',
+    ); // Box spécifique à la visite
+    box.put('soin1', soin1Realise);
+    box.put('soin2', soin2Realise);
+    box.put('commentaire', commentaireController.text);
+
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('Sauvegarde effectuée !')));
   }
 
   @override
@@ -142,19 +177,19 @@ class _PatientScreenState extends State<PatientScreen> {
                         alignment: Alignment.centerRight,
                         child: ElevatedButton(
                           onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'Afficher carte MAP',
-                                ),
-                                duration: Duration(seconds: 2),
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (context) => PatientMapScreen(
+                                      patientData: patientData!,
+                                    ),
                               ),
                             );
                           },
                           child: Text("MAP"),
                         ),
                       ),
-
                       Divider(),
                       SizedBox(height: 5),
                       Text(
@@ -165,6 +200,7 @@ class _PatientScreenState extends State<PatientScreen> {
                         ),
                       ),
                       TextField(
+                        controller: commentaireController,
                         decoration: InputDecoration(
                           hintText: "Commentaire Visite",
                           border: OutlineInputBorder(),
@@ -200,14 +236,7 @@ class _PatientScreenState extends State<PatientScreen> {
                       ),
                       Center(
                         child: ElevatedButton(
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Sauvegarde effectuée !'),
-                                duration: Duration(seconds: 2),
-                              ),
-                            );
-                          },
+                          onPressed: _sauvegarder,
                           child: Text("SAUVEGARDER"),
                         ),
                       ),
