@@ -9,6 +9,6 @@ Le but de l'application est de permettre aux infirmières de gérer leurs tourn�
 - Authentification.
 - Navigation pour visualiser les visites, importer des données.
 - Affichage et modification des informations des soins effectués.
-- Géolocalisation pour situer les patients et l'infirmière sur une carte (api-adresse.data.gouv).
+- Géolocalisation pour situer les patients et l'infirmière sur une carte (api-adresse.data.gouv pour géocoder et OpenStreetMap pour afficher la carte).
 - Stockage local des données via une base de données (Hive).
 - L'application est développée sous Flutter pour une meilleure compatibilité multi-plateforme.
