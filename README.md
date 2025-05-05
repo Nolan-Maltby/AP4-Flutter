@@ -86,4 +86,4 @@ Les tests sont situés dans le dossier test/ et incluent :
 
 Vous pouvez télécharger la dernière version de l'application Android ici :
 
-👉 [Télécharger l'APK](https://github.com/Nolan-Maltby/AP4-Flutter/releases)
+👉 [Télécharger l'APK]([https://github.com/Nolan-Maltby/AP4-Flutter/releases](https://drive.google.com/file/d/1ctSowoXqvHz_L_6Nz1Zk7VnvXeUuI5yw/view?usp=sharing))
