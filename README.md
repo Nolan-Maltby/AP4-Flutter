@@ -2,9 +2,8 @@
 
 Application android pour l'ap4
 
-## But de l'application
-
-Le but de l'application est de permettre aux infirmières de gérer leurs tournées de visites chez les patients. Elle offre les fonctionnalités suivantes :
+## 📱 Vue d'ensemble
+Application mobile développée en Flutter pour la gestion des visites médicales. Cette application permet aux professionnels de santé de gérer efficacement leurs visites, patients et localisations. Elle offre les fonctionnalités suivantes :
 
 - Authentification.
 - Navigation pour visualiser les visites, importer des données.
@@ -12,10 +11,6 @@ Le but de l'application est de permettre aux infirmières de gérer leurs tourn�
 - Géolocalisation pour situer les patients et l'infirmière sur une carte (api-adresse.data.gouv pour géocoder et OpenStreetMap pour afficher la carte).
 - Stockage local des données via une base de données (Hive).
 - L'application est développée sous Flutter pour une meilleure compatibilité multi-plateforme.
-
-
-## 📱 Vue d'ensemble
-Application mobile développée en Flutter pour la gestion des visites médicales. Cette application permet aux professionnels de santé de gérer efficacement leurs visites, patients et localisations.
 
 ## 🏗 Structure du Projet
 
