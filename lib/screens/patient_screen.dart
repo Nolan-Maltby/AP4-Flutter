@@ -42,6 +42,10 @@ class _PatientScreenState extends State<PatientScreen> {
       soin1Realise = box.get('soin1', defaultValue: false);
       soin2Realise = box.get('soin2', defaultValue: false);
       commentaireController.text = box.get('commentaire', defaultValue: '');
+      final dateString = box.get('dateReelle');
+      if (dateString != null) {
+        dateReelle = DateTime.parse(dateString);
+      }
     });
   }
 
@@ -66,19 +70,23 @@ class _PatientScreenState extends State<PatientScreen> {
 
   // Sélectionner une date
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: dateReelle ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
+  final DateTime? picked = await showDatePicker(
+    context: context,
+    initialDate: dateReelle ?? DateTime.now(),
+    firstDate: DateTime(2000),
+    lastDate: DateTime(2100),
+  );
 
-    if (picked != null && picked != dateReelle) {
-      setState(() {
-        dateReelle = picked;
-      });
-    }
+  if (picked != null && picked != dateReelle) {
+    setState(() {
+      dateReelle = picked;
+    });
+
+    var box = await Hive.openBox('visite_${widget.patientId}');
+    box.put('dateReelle', picked.toIso8601String());
   }
+}
+
 
   // Sauvegarder les informations de la visite
   void _sauvegarder() async {
@@ -88,6 +96,8 @@ class _PatientScreenState extends State<PatientScreen> {
     box.put('soin1', soin1Realise);
     box.put('soin2', soin2Realise);
     box.put('commentaire', commentaireController.text);
+    box.put('dateReelle', dateReelle?.toIso8601String());
+
 
     ScaffoldMessenger.of(
       context,
