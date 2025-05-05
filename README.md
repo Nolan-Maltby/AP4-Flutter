@@ -81,3 +81,9 @@ Les tests sont situés dans le dossier test/ et incluent :
 - Tests unitaires
 - Tests d'intégration
 - Tests de widgets
+
+## 📦 Téléchargement
+
+Vous pouvez télécharger la dernière version de l'application Android ici :
+
+👉 [Télécharger l'APK](https://github.com/Nolan-Maltby/AP4-Flutter/releases/download/v1.0.0/app-release.apk)
