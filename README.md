@@ -1,7 +1,3 @@
-# Application Android Kaliémie
-
-Application android pour l'ap4
-
 ## 📱 Vue d'ensemble
 Application mobile développée en Flutter pour la gestion des visites médicales. Cette application permet aux professionnels de santé de gérer efficacement leurs visites, patients et localisations. Elle offre les fonctionnalités suivantes :
 
