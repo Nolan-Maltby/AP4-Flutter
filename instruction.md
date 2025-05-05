@@ -6,13 +6,13 @@ Application mobile développée en Flutter pour la gestion des visites médicale
 ## 🏗 Structure du Projet
 
 ### 📂 Écrans Principaux (`lib/screens/`)
-- `first_screen.dart` : Écran d'accueil et point d'entrée de l'application
-- `second_screen.dart` : Interface de navigation secondaire
-- `third_screen.dart` : Interface de navigation tertiaire
-- `patient_screen.dart` : Gestion complète des informations patients
-- `map_screen.dart` : Interface cartographique interactive
+- `main.dart` : point d'entrée de l'application, exécution de la fonction main() qui initialise et lance l'application.
+- `first_screen.dart` : Écran d'accueil (avant la connexion)
+- `second_screen.dart` : Interface de connexion a l'application
+- `third_screen.dart` : Écran d'accueil (après la connexion)
+- `patient_screen.dart` : Gestion complète des informations de la visite
+- `map_screen.dart` : Interface cartographique
 - `visite_screen.dart` : Gestion des visites médicales
-- `visite_details_screen.dart` : Affichage détaillé des visites
 
 ### 📦 Modèles de Données (`lib/models/`)
 - `credentials.dart` : Structure des données d'authentification
@@ -28,31 +28,20 @@ Application mobile développée en Flutter pour la gestion des visites médicale
 ## 🚀 Fonctionnalités Principales
 
 ### 1. Gestion des Visites
-- Création de nouvelles visites
 - Modification des visites existantes
 - Consultation détaillée des visites
 - Suivi des visites en cours
 
 ### 2. Interface Cartographique
-- Visualisation des visites sur une carte
-- Navigation vers les lieux de visite
 - Géolocalisation des patients
 
 ### 3. Gestion des Patients
-- Création de profils patients
-- Modification des informations
 - Historique des visites par patient
 
 ### 4. Système d'Authentification
 - Connexion sécurisée
 - Gestion des sessions
 - Stockage sécurisé des identifiants
-
-### 5. Services Backend
-- Communication API REST
-- Gestion des permissions système
-- Stockage local des données
-- Synchronisation des données
 
 ## 🛠 Configuration Technique
 
@@ -64,7 +53,7 @@ Application mobile développée en Flutter pour la gestion des visites médicale
 ### Installation
 1. Cloner le repository
 ```bash
-git clone [URL_DU_REPO]
+git clone https://github.com/Nolan-Maltby/AP4-Flutter.git
 ```
 
 2. Installer les dépendances
