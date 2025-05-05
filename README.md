@@ -1,16 +1,14 @@
-# ap4_android_application
+# Application Android Kaliémie
 
 Application android pour l'ap4
 
-## Getting Started
+## But de l'application
 
-This project is a starting point for a Flutter application.
+Le but de l'application est de permettre aux infirmières de gérer leurs tournées de visites chez les patients. Elle offre les fonctionnalités suivantes :
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Authentification.
+- Navigation pour visualiser les visites, importer des données.
+- Affichage et modification des informations des soins effectués.
+- Géolocalisation pour situer les patients et l'infirmière sur une carte (api-adresse.data.gouv).
+- Stockage local des données via une base de données (Hive).
+- L'application est développée sous Flutter pour une meilleure compatibilité multi-plateforme.
