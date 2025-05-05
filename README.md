@@ -14,8 +14,6 @@ Le but de l'application est de permettre aux infirmières de gérer leurs tourn�
 - L'application est développée sous Flutter pour une meilleure compatibilité multi-plateforme.
 
 
-# AP4 Android Application
-
 ## 📱 Vue d'ensemble
 Application mobile développée en Flutter pour la gestion des visites médicales. Cette application permet aux professionnels de santé de gérer efficacement leurs visites, patients et localisations.
 
